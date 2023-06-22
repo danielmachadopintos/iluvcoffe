@@ -12,6 +12,7 @@ export class Event {
   @Column()
   type: string;
 
+  // that we can save any kind of data in the payload column
   @Column('json')
   payload: Record<string, any>;
 }

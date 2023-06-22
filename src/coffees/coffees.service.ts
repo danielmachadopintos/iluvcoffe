@@ -6,7 +6,7 @@ import { CreateCoffeeDto } from './dto/create-coffee.dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/create-coffee.dto/update-coffee.dto';
 import { Flavor } from './entities/flavor.entity';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
-import { Event } from 'src/events/entities/event.entity/event.entity';
+import { Event } from 'src/events/entities/event.entity';
 
 @Injectable()
 export class CoffeesService {
@@ -14,7 +14,9 @@ export class CoffeesService {
     @InjectRepository(Coffee)
     private readonly coffeeRepository: Repository<Coffee>,
     @InjectRepository(Flavor)
-    private readonly flavorRepository: Repository<Flavor>, // private readonly dataSource: DataSource,
+    private readonly flavorRepository: Repository<Flavor>,
+    // não precisa injetar o datasource, pois o typeorm já faz isso
+    private readonly dataSource: DataSource,
   ) {}
 
   findAll(paginationQuery: PaginationQueryDto) {
@@ -53,6 +55,7 @@ export class CoffeesService {
   }
 
   async update(id: string, updateCoffeeDto: UpdateCoffeeDto) {
+    // check if flavors exists and preload them in memory, because is optional
     const flavors =
       updateCoffeeDto.flavors &&
       (await Promise.all(
@@ -77,6 +80,7 @@ export class CoffeesService {
     return this.coffeeRepository.remove(coffee);
   }
 
+  // preload flavor by name create or find flavor
   private async preloadFlavorByBame(name: string): Promise<Flavor> {
     const existingFlavor = await this.flavorRepository.findOne({
       where: { name },
@@ -87,26 +91,27 @@ export class CoffeesService {
     return this.flavorRepository.create({ name });
   }
 
-  // async recommendCoffee(coffee: Coffee) {
-  //   const queryRunner = this.dataSource.createQueryRunner();
+  // example to using transations
+  async recommendCoffee(coffee: Coffee) {
+    const queryRunner = this.dataSource.createQueryRunner();
 
-  //   await queryRunner.connect();
-  //   await queryRunner.startTransaction();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-  //   try {
-  //     coffee.recommendations++;
+    try {
+      coffee.recommendations++;
 
-  //     const recommendEvent = new Event();
-  //     recommendEvent.name = 'recommend_coffee';
+      const recommendEvent = new Event();
+      recommendEvent.name = 'recommend_coffee';
 
-  //     await queryRunner.manager.save(coffee);
-  //     await queryRunner.manager.save(recommendEvent);
+      await queryRunner.manager.save(coffee);
+      await queryRunner.manager.save(recommendEvent);
 
-  //     await queryRunner.commitTransaction();
-  //   } catch (error) {
-  //     await queryRunner.rollbackTransaction();
-  //   } finally {
-  //     await queryRunner.release();
-  //   }
-  // }
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
+  }
 }
