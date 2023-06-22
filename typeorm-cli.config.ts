@@ -7,6 +7,6 @@ export default new DataSource({
   username: 'postgres',
   password: 'postgres123',
   database: 'postgres',
-  entities: ['dist/**/*.entity.js'],
-  migrations: ['dist/migrations/*.js'],
+  entities: [],
+  migrations: [],
 });
