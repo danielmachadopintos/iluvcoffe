@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Coffee } from '../coffe.entity';
+import { Coffee } from './coffe.entity';
 
+// remover sempre o entity para refletir o que está no banco de dados.
 @Entity()
 export class Flavor {
   @PrimaryGeneratedColumn()
