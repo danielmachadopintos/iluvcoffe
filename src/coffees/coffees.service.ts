@@ -13,8 +13,8 @@ export class CoffeesService {
   constructor(
     @InjectRepository(Coffee)
     private readonly coffeeRepository: Repository<Coffee>,
-    private readonly flavorRepository: Repository<Flavor>,
-    private readonly dataSource: DataSource,
+    @InjectRepository(Flavor)
+    private readonly flavorRepository: Repository<Flavor>, // private readonly dataSource: DataSource,
   ) {}
 
   findAll(paginationQuery: PaginationQueryDto) {
@@ -45,7 +45,10 @@ export class CoffeesService {
       createCoffeeDto.flavors.map((name) => this.preloadFlavorByBame(name)),
     );
 
-    const coffe = this.coffeeRepository.create({ ...createCoffeeDto, flavors });
+    const coffe = this.coffeeRepository.create({
+      ...createCoffeeDto,
+      flavors,
+    });
     return this.coffeeRepository.save(coffe);
   }
 
@@ -75,34 +78,35 @@ export class CoffeesService {
   }
 
   private async preloadFlavorByBame(name: string): Promise<Flavor> {
-    // const existingFlavor = await this.flavorRepository.findOne({ name });
-    // if (existingFlavor) {
-    //   return existingFlavor;
-    // }
-
+    const existingFlavor = await this.flavorRepository.findOne({
+      where: { name },
+    });
+    if (existingFlavor) {
+      return existingFlavor;
+    }
     return this.flavorRepository.create({ name });
   }
 
-  async recommendCoffee(coffee: Coffee) {
-    const queryRunner = this.dataSource.createQueryRunner();
+  // async recommendCoffee(coffee: Coffee) {
+  //   const queryRunner = this.dataSource.createQueryRunner();
 
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+  //   await queryRunner.connect();
+  //   await queryRunner.startTransaction();
 
-    try {
-      coffee.recommendations++;
+  //   try {
+  //     coffee.recommendations++;
 
-      const recommendEvent = new Event();
-      recommendEvent.name = 'recommend_coffee';
+  //     const recommendEvent = new Event();
+  //     recommendEvent.name = 'recommend_coffee';
 
-      await queryRunner.manager.save(coffee);
-      await queryRunner.manager.save(recommendEvent);
+  //     await queryRunner.manager.save(coffee);
+  //     await queryRunner.manager.save(recommendEvent);
 
-      await queryRunner.commitTransaction();
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-    } finally {
-      await queryRunner.release();
-    }
-  }
+  //     await queryRunner.commitTransaction();
+  //   } catch (error) {
+  //     await queryRunner.rollbackTransaction();
+  //   } finally {
+  //     await queryRunner.release();
+  //   }
+  // }
 }

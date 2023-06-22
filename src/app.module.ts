@@ -6,11 +6,11 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 // importação do modulo coffees
-// import { CoffeesModule } from './coffees/coffees.module';
+import { CoffeesModule } from './coffees/coffees.module';
 
 @Module({
   imports: [
-    // CoffeesModule,
+    CoffeesModule,
     TypeOrmModule.forRoot({
       type: 'postgres', // tipo do banco de dados
       host: 'localhost', // endereço do banco de dados
@@ -21,7 +21,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true, // carrega as entidades automaticamente
       synchronize: true,
       // sincroniza as entidades com o banco de dados,
-      // não é recomendado para produção,
+      // não é recomendado para PRODUÇAO,
       // porque ele faz é dropar as tabelas e criar novamente
     }),
   ],
