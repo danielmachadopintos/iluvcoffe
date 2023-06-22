@@ -75,10 +75,10 @@ export class CoffeesService {
   }
 
   private async preloadFlavorByBame(name: string): Promise<Flavor> {
-    const existingFlavor = await this.flavorRepository.findOne({ name });
-    if (existingFlavor) {
-      return existingFlavor;
-    }
+    // const existingFlavor = await this.flavorRepository.findOne({ name });
+    // if (existingFlavor) {
+    //   return existingFlavor;
+    // }
 
     return this.flavorRepository.create({ name });
   }

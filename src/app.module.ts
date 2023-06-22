@@ -6,17 +6,17 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 // importação do modulo coffees
-import { CoffeesModule } from './coffees/coffees.module';
+// import { CoffeesModule } from './coffees/coffees.module';
 
 @Module({
   imports: [
-    CoffeesModule,
+    // CoffeesModule,
     TypeOrmModule.forRoot({
       type: 'postgres', // tipo do banco de dados
       host: 'localhost', // endereço do banco de dados
-      port: 5432, // porta do banco de dados
+      port: 5431, // porta do banco de dados
       username: 'postgres', // usuário do banco de dados
-      password: '',
+      password: 'pass123',
       database: 'postgres', // nome do banco de dados
       autoLoadEntities: true, // carrega as entidades automaticamente
       synchronize: true,
