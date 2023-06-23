@@ -1,4 +1,5 @@
-import { CoffeeRefactor1687466166424 } from 'src/migrations/1687466166424-CoffeeRefactor';
+import { Coffee } from 'src/coffees/entities/coffe.entity';
+import { Flavor } from 'src/coffees/entities/flavor.entity';
 import { DataSource } from 'typeorm';
 
 export default new DataSource({
@@ -8,6 +9,6 @@ export default new DataSource({
   username: 'postgres',
   password: 'postgres123',
   database: 'postgres',
-  entities: [],
-  migrations: [CoffeeRefactor1687466166424],
+  entities: [Coffee, Flavor],
+  migrations: [],
 });

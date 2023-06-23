@@ -18,6 +18,9 @@ export class Coffee {
   @Column()
   brand: string;
 
+  @Column()
+  description: string;
+
   //   @Column('json', { nullable: true }) // json type
   //   flavors: string[];
   @JoinTable()
