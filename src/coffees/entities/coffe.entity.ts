@@ -18,7 +18,7 @@ export class Coffee {
   @Column()
   brand: string;
 
-  @Column()
+  @Column({ nullable: true })
   description: string;
 
   //   @Column('json', { nullable: true }) // json type

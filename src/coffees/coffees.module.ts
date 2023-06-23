@@ -10,5 +10,6 @@ import { Event } from 'src/events/entities/event.entity';
   imports: [TypeOrmModule.forFeature([Coffee, Flavor, Event])], // 👈 Adding Coffee Entity here to the array
   controllers: [CoffesController],
   providers: [CoffeesService],
+  exports: [CoffeesService],
 })
 export class CoffeesModule {}
