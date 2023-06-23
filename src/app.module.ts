@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 // importação do modulo coffees
 import { CoffeesModule } from './coffees/coffees.module';
 import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
       // porque ele faz é dropar as tabelas e criar novamente
     }),
     CoffeeRatingModule,
+    DatabaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
