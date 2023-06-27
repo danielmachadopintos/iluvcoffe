@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,6 +18,17 @@ async function bootstrap() {
       },
     }),
   ); // habilita o uso de pipes de validação
+
+  const options = new DocumentBuilder()
+    .setTitle('ILuvCoffee API')
+    .setDescription('The ILuvCoffee API description')
+    .setVersion('1.0')
+    .addTag('ILuvCoffee')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, options);
+
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(3000);
 }

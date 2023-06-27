@@ -15,18 +15,18 @@ import appConfig from './config/app.config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      load: [appConfig],
-    }), // carrega as variáveis de ambiente
+    // ConfigModule.forRoot({
+    //   load: [appConfig],
+    // }), // carrega as variáveis de ambiente
     CoffeesModule,
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
         type: 'postgres', // tipo do banco de dados
-        host: process.env.DATABASE_HOST,
-        port: +process.env.DATABASE_PORT,
-        username: process.env.DATABASE_USER,
-        password: process.env.DATABASE_PASSWORD,
-        database: process.env.DATABASE_NAME,
+        host: 'localhost',
+        port: 5431,
+        username: 'postgres',
+        password: 'pass123',
+        database: 'postgres',
         autoLoadEntities: true, // carrega as entidades automaticamente
         synchronize: true,
         // sincroniza as entidades com o banco de dados,
