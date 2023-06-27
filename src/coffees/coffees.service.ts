@@ -7,6 +7,7 @@ import { UpdateCoffeeDto } from './dto/create-coffee.dto/update-coffee.dto';
 import { Flavor } from './entities/flavor.entity';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 import { Event } from 'src/events/entities/event.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class CoffeesService {
@@ -17,7 +18,13 @@ export class CoffeesService {
     private readonly flavorRepository: Repository<Flavor>,
     // não precisa injetar o datasource, pois o typeorm já faz isso
     private readonly dataSource: DataSource,
-  ) {}
+    // inject config service
+    private readonly configService: ConfigService,
+  ) {
+    // get the value from config file
+    const databaseHost = this.configService.get<string>('DATABASE_HOST');
+    console.log(databaseHost);
+  }
 
   findAll(paginationQuery: PaginationQueryDto) {
     const { limit, offset } = paginationQuery;

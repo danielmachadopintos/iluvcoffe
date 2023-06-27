@@ -9,10 +9,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 // importação do modulo coffees
 import { CoffeesModule } from './coffees/coffees.module';
 import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
+import * as Joi from '@hapi/joi';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(), // carrega as variáveis de ambiente
+    ConfigModule.forRoot({
+      envFilePath: '.env', // caminho do arquivo de variáveis de ambiente
+      validationSchema: Joi.object({
+        DATABASE_HOST: Joi.required(),
+        DATABASE_PORT: Joi.number().default(5432),
+      }), // schema de validação das variáveis de ambiente
+    }), // carrega as variáveis de ambiente
     CoffeesModule,
     TypeOrmModule.forRoot({
       type: 'postgres', // tipo do banco de dados
