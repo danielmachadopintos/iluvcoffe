@@ -15,7 +15,7 @@ import { CoffeesService } from './coffees.service';
 // imports dto (data transfer object)
 import { CreateCoffeeDto } from './dto/create-coffee.dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/create-coffee.dto/update-coffee.dto';
-import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
+import { PaginationQueryDto } from '../../src/common/dto/pagination-query.dto/pagination-query.dto';
 import { ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('coffees')
